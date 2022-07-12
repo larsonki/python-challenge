@@ -1,6 +1,5 @@
 # Python script to analyze Profit & Loss of a company over approx 7 years.
 # import file & read it
-from distutils.util import change_root
 import os
 import csv
 #import pandas as pd
@@ -10,7 +9,7 @@ with open(file_path) as budget_data:
         # read header row first
         csv_header=next(budget_data)
         # create an empty set to store # of rows for months
-        total_months = set()
+        total_months = []
         # create a variable for total and set to 0
         total = 0
         amount = []
@@ -21,7 +20,7 @@ with open(file_path) as budget_data:
                 # referenced code from James Shapiro at https://stackoverflow.com/
                 # questions/64857757/best-way-to-count-unique-values-from
                 # -csv-in-python
-                total_months.add(row[0])
+                total_months.append(row[0])
                 # sum each row in the second column for the net total P/L
                 total += int(row[1])
                 #change = change + int(row[1]) - (int(row[1]-1))
@@ -39,12 +38,16 @@ with open(file_path) as budget_data:
                 # element indexed at -1 or the first amount
         # calculate average change
         avg_change = sum(change)/len(change)
+        max_change_index = change.index(max(change))
+        min_change_index = change.index(min(change))
+        max_mm_yy = total_months[max_change_index+1]
+        min_mm_yy = total_months[min_change_index+1]
         print("Financial Analysis")
         print("----------------------------")
         print(f"Total Months: {len(total_months)}")
         print(f"Total: ${total}")
-        print(f"Average Change: ${avg_change}")
-        #print(f"Greatest Increase in Profits: {} (${max(change)})")
-        #print(f"Greatest Decrease in Profits: {} (${min(change)})")
+        print(f"Average Change: ${round(avg_change,2)}")
+        print(f"Greatest Increase in Profits: {max_mm_yy} (${max(change)})")
+        print(f"Greatest Decrease in Profits: {min_mm_yy} (${min(change)})")
         
         
