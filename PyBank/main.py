@@ -2,7 +2,6 @@
 # import file & read it
 import os
 import csv
-#import pandas as pd
 file_path = os.path.join('Resources','budget_data.csv')
 with open(file_path) as budget_data:
         csv_reader=csv.reader(budget_data,delimiter=',')
@@ -23,7 +22,6 @@ with open(file_path) as budget_data:
                 total_months.append(row[0])
                 # sum each row in the second column for the net total P/L
                 total += int(row[1])
-                #change = change + int(row[1]) - (int(row[1]-1))
                 # create a list of all values in the P/L column & convert
                 # to an integer
                 amount.append(int(row[1]))
@@ -38,16 +36,26 @@ with open(file_path) as budget_data:
                 # element indexed at -1 or the first amount
         # calculate average change
         avg_change = sum(change)/len(change)
+        # determine corresponding month with max/min change
         max_change_index = change.index(max(change))
         min_change_index = change.index(min(change))
         max_mm_yy = total_months[max_change_index+1]
         min_mm_yy = total_months[min_change_index+1]
-        print("Financial Analysis")
-        print("----------------------------")
-        print(f"Total Months: {len(total_months)}")
-        print(f"Total: ${total}")
-        print(f"Average Change: ${round(avg_change,2)}")
-        print(f"Greatest Increase in Profits: {max_mm_yy} (${max(change)})")
-        print(f"Greatest Decrease in Profits: {min_mm_yy} (${min(change)})")
-        
+        # print statements to display analysis
+        print(f'''Financial Analysis
+----------------------------
+Total Months: {len(total_months)}
+Total: ${total}
+Average Change: ${round(avg_change,2)}
+Greatest Increase in Profits: {max_mm_yy} (${max(change)})
+Greatest Decrease in Profits: {min_mm_yy} (${min(change)})''')
+# export data to a txt file
+with open('budget_analysis.txt','w') as f:
+        print(f'''Financial Analysis
+----------------------------
+Total Months: {len(total_months)}
+Total: ${total}
+Average Change: ${round(avg_change,2)}
+Greatest Increase in Profits: {max_mm_yy} (${max(change)})
+Greatest Decrease in Profits: {min_mm_yy} (${min(change)})''', file=f)
         
